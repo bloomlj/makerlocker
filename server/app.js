@@ -8,7 +8,7 @@ var server = net.createServer(function(c) { //'connection' listener
     	c.write("A");
 	console.log(c.remoteAddress + ":" + c.remotePort + ">" + data);
         //process.stdout.write(data);
-	console.log(data.slice(0,8));
+	//console.log(data.slice(0,8));
 	//cardid = data.substring(0,3);
         //console.log(cardid);	
       	//broadcast(data);
