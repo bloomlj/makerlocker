@@ -148,8 +148,11 @@ uchar userCode[50][4] = {{68,152,252,4},   //white
                         {187,173,15,13},   //wang heng
                         {164,230,152,244},   //wang heng
                         {204,44,88,1},   //li
-                        {245,18,130,181}//teacher lijun
-                        };  
+                        {245,18,130,181},//teacher lijun
+                        {131,171,81,182},//public
+                        {211,88,144,181},
+                        {243,164,123,129}
+                        }; 
 uchar flag = 0;
 char inByte = ' ';
 int somebody=0;
@@ -195,8 +198,10 @@ void loop()
                         ShowCardID(serNum);
                          if (Serial1.available() > 0) {
                           inByte = Serial1.read();
-                         // Serial1.println(inByte);
-                           if(inByte=='A')  {                       
+                          Serial.print("get cmd:");
+                          Serial.print(inByte);
+                           if(inByte=='A')  {
+                          Serial.println("|Open door");                       
                            digitalWrite(pwm,HIGH);
                             if(flag == 1)
                               myStepper.step(75);
@@ -207,6 +212,24 @@ void loop()
                             else
                                flag = 0;
                             digitalWrite(pwm,LOW);  }  }
+                            // for debug
+                          if (Serial.available() > 0) {
+                          inByte = Serial.read();
+                          Serial.print("get cmd:");
+                          Serial.print(inByte);
+                           if(inByte=='A')  {
+                          Serial.println("|Open door");                       
+                           digitalWrite(pwm,HIGH);
+                            if(flag == 1)
+                              myStepper.step(75);
+                            else
+                              myStepper.step(-75);
+                            if(flag == 0)
+                               flag =1;
+                            else
+                               flag = 0;
+                            digitalWrite(pwm,LOW);  }  }
+                            
 //			Serial1.println(serNum[0]);
 //			Serial1.println(serNum[1]);
 //			Serial1.println(serNum[2]);
@@ -217,7 +240,8 @@ void loop()
                         for(i=0;i<50;i++)// 50 people
                         {
                           if(serNum[0] == userCode[i][0] &&serNum[1] == userCode[i][1]&&serNum[2] == userCode[i][2] &&serNum[3] == userCode[i][3])
-                          {         
+                          { 
+                            Serial.print("pass check");
                            // flag = ~flag;
                             digitalWrite(pwm,HIGH);
                             if(flag == 1)
@@ -774,16 +798,12 @@ void MFRC522_Halt(void)
 void ShowCardID(uchar *id)
 {
     int IDlen=4;
-    Serial.println("The card's number is  : ");
-    for(int i=0; i<IDlen; i++){
-        Serial.print(0x0F & (id[i]>>4), HEX);
-        Serial.print(0x0F & id[i],HEX);
-    }
-    Serial.println("over");
-    Serial1.println("The card's number is  : ");
     for(int i=0; i<IDlen; i++){
         Serial1.print(0x0F & (id[i]>>4), HEX);
+        Serial.print(0x0F & (id[i]>>4), HEX);
         Serial1.print(0x0F & id[i],HEX);
+        Serial.print(0x0F & id[i],HEX);
     }
-    Serial1.println("over");
+    Serial1.print("|");
+    Serial.print("|");
 }
