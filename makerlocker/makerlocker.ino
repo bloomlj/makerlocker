@@ -151,7 +151,8 @@ uchar userCode[50][4] = {{68,152,252,4},   //white
                         {245,18,130,181},//teacher lijun
                         {131,171,81,182},//public
                         {211,88,144,181},
-                        {243,164,123,129}
+                        {243,164,123,129},
+                        {197,178,117,52}//shangliming
                         }; 
 uchar flag = 0;
 char inByte = ' ';
@@ -798,11 +799,13 @@ void MFRC522_Halt(void)
 void ShowCardID(uchar *id)
 {
     int IDlen=4;
+   
     for(int i=0; i<IDlen; i++){
         Serial1.print(0x0F & (id[i]>>4), HEX);
         Serial.print(0x0F & (id[i]>>4), HEX);
         Serial1.print(0x0F & id[i],HEX);
         Serial.print(0x0F & id[i],HEX);
+        
     }
     Serial1.print("|");
     Serial.print("|");
